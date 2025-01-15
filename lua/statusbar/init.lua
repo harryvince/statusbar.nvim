@@ -1,24 +1,8 @@
 local M = {}
 
---- @class StatusbarOptions
 M.options = {}
 
---- @class StatusbarOptions
-local defaults = {
-	ignoreFiles = {
-		both = { "netrw", "terminal", "scratch" },
-		lsp = {},
-		fmt = {},
-	},
-}
-
 M.LspStatus = function()
-	for _, file in ipairs(M.options.ignoreFiles.lsp) do
-		if vim.bo.filetype == file then
-			return nil
-		end
-	end
-
 	local clients = vim.lsp.get_clients()
 	local buf_clients = {}
 
@@ -29,19 +13,13 @@ M.LspStatus = function()
 	end
 
 	if #buf_clients == 0 then
-		return "LSP: None"
+		return nil
 	end
 
 	return "LSP: " .. table.concat(buf_clients, ", ")
 end
 
 M.FormatterStatus = function()
-	for _, file in ipairs(M.options.ignoreFiles.fmt) do
-		if vim.bo.filetype == file then
-			return nil
-		end
-	end
-
 	local conform = require("conform")
 	local bufnr = vim.api.nvim_get_current_buf()
 	local formatters, _ = conform.list_formatters_to_run(bufnr)
@@ -53,7 +31,7 @@ M.FormatterStatus = function()
 		end
 		return "FMT: " .. table.concat(formatter_names, ", ")
 	else
-		return "FMT: None"
+		return nil
 	end
 end
 
@@ -75,12 +53,6 @@ end
 M._options = nil
 
 M.setup = function(options)
-    M._options = options
-	M.options = vim.tbl_deep_extend("force", {}, defaults, M.options or {}, M._options or {})
-
-    vim.list_extend(M.options.ignoreFiles.lsp, M.options.ignoreFiles.both)
-    vim.list_extend(M.options.ignoreFiles.fmt, M.options.ignoreFiles.both)
-
 	vim.o.statusline = "%f" -- File name
 		.. " %m" -- Modified flag
 		.. " %r" -- Read-only flag

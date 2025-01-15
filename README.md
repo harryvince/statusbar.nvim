@@ -32,32 +32,9 @@ Install the plugin with your preferred package manager:
 {
   "harryvince/statusbar.nvim",
   dependencies = { "stevearc/conform.nvim" },
-  opts = {
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  }
+  opts = {}
 }
 ```
-
-## ⚙️ Configuration
-
-Statusbar comes with the following defaults:
-
-```lua
-{
-	ignoreFiles = {
-		both = { "netrw", "terminal", "scratch" },
-		lsp = {},
-		fmt = {},
-	},
-}
-```
-
-## 🚀 Usage
-
-To control wether the LSP & FMT indicator shows up this can be controlled
-under the `ignoreFiles` field. If placed under both it won't be shown.
 
 > [!Disclaimer]
 > This README was inspired by [folke](https://github.com/folke)
