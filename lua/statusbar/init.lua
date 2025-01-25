@@ -8,7 +8,9 @@ M.LspStatus = function()
 
 	for _, client in ipairs(clients) do
 		if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-			table.insert(buf_clients, client.name)
+            if client.name ~= "GitHub Copilot" then
+                table.insert(buf_clients, client.name)
+            end
 		end
 	end
 
