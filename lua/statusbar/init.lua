@@ -8,9 +8,9 @@ M.LspStatus = function()
 
 	for _, client in ipairs(clients) do
 		if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-            if client.name ~= "GitHub Copilot" then
-                table.insert(buf_clients, client.name)
-            end
+			if client.name ~= "GitHub Copilot" then
+				table.insert(buf_clients, client.name)
+			end
 		end
 	end
 
@@ -55,6 +55,22 @@ end
 M._options = nil
 
 M.setup = function(options)
+	local hidden_filetypes = {
+		Avante = true,
+		AvanteInput = true,
+		AvanteSelectedFiles = true,
+	}
+
+	vim.api.nvim_create_autocmd({ "BufWinEnter", "FileType", "WinEnter", "BufEnter" }, {
+		callback = function()
+			if hidden_filetypes[vim.bo.filetype] then
+				vim.opt.laststatus = 3
+			else
+				vim.opt.laststatus = 2
+			end
+		end,
+	})
+
 	vim.o.statusline = "%f" -- File name
 		.. " %m" -- Modified flag
 		.. " %r" -- Read-only flag
