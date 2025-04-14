@@ -38,6 +38,10 @@ M.FormatterStatus = function()
 end
 
 M.Display = function()
+	if M.options.hide_lsp == true then
+		return ""
+	end
+
 	local lsp = M.LspStatus()
 	local formatter = M.FormatterStatus()
 
@@ -52,9 +56,8 @@ M.Display = function()
 	end
 end
 
-M._options = nil
-
 M.setup = function(options)
+	M.options = vim.tbl_deep_extend("force", M.options, options or {})
 	local hidden_filetypes = {
 		Avante = true,
 		AvanteInput = true,
